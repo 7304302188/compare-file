@@ -239,7 +239,7 @@ function App() {
       formData.append('file1', file1)
       formData.append('file2', file2)
 
-      const response = await fetch('http://localhost:8000/api/compare-zips', {
+      const response = await fetch('/api/compare-zips', {
         method: 'POST',
         body: formData,
       })
@@ -275,7 +275,7 @@ function App() {
       setSuccess(`Files processed successfully! Found ${data.summary.zip1_stats.total_files} files in ZIP 1, ${data.summary.zip2_stats.total_files} files in ZIP 2. ${stats.total_duplicates} duplicates detected. Final merged ZIP contains ${stats.total_kept} files.`)
       setLoading(false)
     } catch (err) {
-      setError(`Error: ${err.message}. Make sure the backend server is running on http://localhost:8000`)
+      setError(`Error: ${err.message}`)
       setLoading(false)
     }
   }
