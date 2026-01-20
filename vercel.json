@@ -14,7 +14,6 @@
     }
   ],
   "routes": [
-    // API routes
     {
       "src": "/api/compare-zips",
       "methods": ["POST", "OPTIONS"],
@@ -29,8 +28,6 @@
       "src": "/api/(.*)",
       "dest": "api/index.py"
     },
-
-    // Static assets (from React/Vue build)
     {
       "src": "/static/(.*)",
       "dest": "frontend/dist/static/$1"
@@ -51,8 +48,6 @@
       "src": "/robots.txt",
       "dest": "frontend/dist/robots.txt"
     },
-
-    // SPA catch-all (all other routes)
     {
       "src": "/(.*)",
       "dest": "frontend/dist/index.html"
