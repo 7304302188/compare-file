@@ -15,6 +15,16 @@
   ],
   "routes": [
     {
+      "src": "/api/compare-zips",
+      "methods": ["POST", "OPTIONS"],
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/api/health",
+      "methods": ["GET", "OPTIONS"],
+      "dest": "api/index.py"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "api/index.py"
     },
