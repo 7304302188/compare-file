@@ -14,6 +14,7 @@
     }
   ],
   "routes": [
+    // API routes
     {
       "src": "/api/compare-zips",
       "methods": ["POST", "OPTIONS"],
@@ -28,6 +29,30 @@
       "src": "/api/(.*)",
       "dest": "api/index.py"
     },
+
+    // Static assets (from React/Vue build)
+    {
+      "src": "/static/(.*)",
+      "dest": "frontend/dist/static/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "frontend/dist/favicon.ico"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "frontend/dist/manifest.json"
+    },
+    {
+      "src": "/asset-manifest.json",
+      "dest": "frontend/dist/asset-manifest.json"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "frontend/dist/robots.txt"
+    },
+
+    // SPA catch-all (all other routes)
     {
       "src": "/(.*)",
       "dest": "frontend/dist/index.html"
