@@ -15,7 +15,7 @@ app = FastAPI(title="ZIP Comparison Tool")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -324,7 +324,7 @@ def merge_pdfs(zip1_pdfs: Dict[str, str], zip2_pdfs: Dict[str, str],
     return result_zip_path, summary
 
 
-@app.post("/compare-zips")
+@app.post("/api/compare-zips")
 async def compare_zips(
     file1: UploadFile = File(...),
     file2: UploadFile = File(...)
@@ -392,7 +392,7 @@ async def compare_zips(
             raise HTTPException(status_code=500, detail=f"Error processing files: {str(e)}")
 
 
-@app.get("/health")
+@app.get("/api/health")
 async def health():
     return {"status": "ok"}
 
