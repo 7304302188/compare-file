@@ -8,9 +8,7 @@
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [
@@ -29,28 +27,8 @@
       "dest": "api/index.py"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "frontend/dist/static/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "frontend/dist/favicon.ico"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "frontend/dist/manifest.json"
-    },
-    {
-      "src": "/asset-manifest.json",
-      "dest": "frontend/dist/asset-manifest.json"
-    },
-    {
-      "src": "/robots.txt",
-      "dest": "frontend/dist/robots.txt"
-    },
-    {
       "src": "/(.*)",
-      "dest": "frontend/dist/index.html"
+      "dest": "/index.html"
     }
   ]
 }
