@@ -324,8 +324,7 @@ def merge_pdfs(zip1_pdfs: Dict[str, str], zip2_pdfs: Dict[str, str],
     return result_zip_path, summary
 
 
-@app.api_route("/api/compare-zips", methods=["POST", "OPTIONS"])
-@app.api_route("/compare-zips", methods=["POST", "OPTIONS"])
+@app.post("/api/compare-zips")
 async def compare_zips(
     file1: UploadFile = File(...),
     file2: UploadFile = File(...)
@@ -394,9 +393,10 @@ async def compare_zips(
 
 
 @app.get("/api/health")
-@app.get("/health")
-@app.get("/api")
-@app.get("/")
 async def health():
     return {"status": "ok", "message": "ZIP Comparison API is running"}
+
+@app.get("/api")
+async def api_root():
+    return {"status": "ok", "message": "ZIP Comparison API"}
 
