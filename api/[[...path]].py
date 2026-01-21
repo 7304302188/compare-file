@@ -25,6 +25,7 @@ app.add_middleware(
 
 # Explicit OPTIONS handler for compare-zips
 @app.options("/api/compare-zips")
+@app.options("/compare-zips")
 async def options_compare_zips():
     return Response(
         status_code=200,
@@ -340,6 +341,7 @@ def merge_pdfs(zip1_pdfs: Dict[str, str], zip2_pdfs: Dict[str, str],
 
 
 @app.post("/api/compare-zips")
+@app.post("/compare-zips")
 async def compare_zips(
     file1: UploadFile = File(...),
     file2: UploadFile = File(...)
