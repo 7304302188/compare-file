@@ -1,6 +1,6 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Request
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse
 import zipfile
 import os
 import tempfile
@@ -16,25 +16,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+    allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["*"],
-    max_age=86400,
 )
-
-
-# Explicit OPTIONS handler for compare-zips
-@app.options("/api/compare-zips")
-@app.options("/compare-zips")
-async def options_compare_zips():
-    return Response(
-        status_code=200,
-        headers={
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "*",
-        }
-    )
 
 
 def extract_username_from_pdf_name(pdf_name: str) -> str:
@@ -340,8 +324,8 @@ def merge_pdfs(zip1_pdfs: Dict[str, str], zip2_pdfs: Dict[str, str],
     return result_zip_path, summary
 
 
-@app.post("/api/compare-zips")
-@app.post("/compare-zips")
+@app.api_route("/api/compare-zips", methods=["POST", "OPTIONS"])
+@app.api_route("/compare-zips", methods=["POST", "OPTIONS"])
 async def compare_zips(
     file1: UploadFile = File(...),
     file2: UploadFile = File(...)
@@ -409,21 +393,10 @@ async def compare_zips(
             raise HTTPException(status_code=500, detail=f"Error processing files: {str(e)}")
 
 
-@app.api_route("/api/health", methods=["GET", "POST"])
-@app.api_route("/health", methods=["GET", "POST"])
+@app.get("/api/health")
+@app.get("/health")
+@app.get("/api")
+@app.get("/")
 async def health():
     return {"status": "ok", "message": "ZIP Comparison API is running"}
-
-@app.api_route("/api/test", methods=["GET", "POST"])
-@app.api_route("/test", methods=["GET", "POST"])
-async def test_post():
-    return {"status": "ok", "message": "POST works"}
-
-@app.api_route("/{path:path}", methods=["GET", "POST"])
-async def catch_all(request: Request, path: str):
-    return {"received_path": path, "full_path": str(request.url.path), "method": request.method}
-
-@app.get("/api")
-async def api_root():
-    return {"status": "ok", "message": "ZIP Comparison API"}
 
