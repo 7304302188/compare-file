@@ -1,6 +1,6 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 import zipfile
 import os
 import tempfile
@@ -16,9 +16,24 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=86400,
 )
+
+
+# Explicit OPTIONS handler for compare-zips
+@app.options("/api/compare-zips")
+async def options_compare_zips():
+    return Response(
+        status_code=200,
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+        }
+    )
 
 
 def extract_username_from_pdf_name(pdf_name: str) -> str:
@@ -395,6 +410,10 @@ async def compare_zips(
 @app.get("/api/health")
 async def health():
     return {"status": "ok", "message": "ZIP Comparison API is running"}
+
+@app.post("/api/test")
+async def test_post():
+    return {"status": "ok", "message": "POST works"}
 
 @app.get("/api")
 async def api_root():
