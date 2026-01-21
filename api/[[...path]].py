@@ -407,13 +407,19 @@ async def compare_zips(
             raise HTTPException(status_code=500, detail=f"Error processing files: {str(e)}")
 
 
-@app.get("/api/health")
+@app.api_route("/api/health", methods=["GET", "POST"])
+@app.api_route("/health", methods=["GET", "POST"])
 async def health():
     return {"status": "ok", "message": "ZIP Comparison API is running"}
 
-@app.post("/api/test")
+@app.api_route("/api/test", methods=["GET", "POST"])
+@app.api_route("/test", methods=["GET", "POST"])
 async def test_post():
     return {"status": "ok", "message": "POST works"}
+
+@app.api_route("/{path:path}", methods=["GET", "POST"])
+async def catch_all(request: Request, path: str):
+    return {"received_path": path, "full_path": str(request.url.path), "method": request.method}
 
 @app.get("/api")
 async def api_root():
